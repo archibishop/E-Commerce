@@ -7,12 +7,14 @@
     <div class="dropdown p-2 col-4">
         <a class="p-2 text-dark mr-2 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            Categories
+            Category
         </a>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="#">Category</a>
-            <a class="dropdown-item" href="#">Category</a>
-            <a class="dropdown-item" href="#">Category</a>
+            {% for category in categories %}
+                <a class="dropdown-item" href="{% url 'product:products-category' category.category_name  %}">{{ category.category_name }}</a>
+            {% empty %}
+                <a class="dropdown-item" href="#">No Available Category</a>
+            {% endfor %}
         </div>
     </div>
     <div class="dropdown p-2 col-4" >
