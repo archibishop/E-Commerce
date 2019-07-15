@@ -23,3 +23,22 @@ class ProductsTestCase(TestCase):
         response = client.get('/product/list')
         self.assertContains(
             response, 'Airmax shoes', status_code=200)
+
+    def test_products_page_with_product_vendor(self):
+        client = Client()
+        user = User.objects.create_user(username='user_name',
+                                        email='email',
+                                        password='password',
+                                        first_name='first_name',
+                                        last_name='last_name')
+        Product.objects.create(product_name="Airmax shoes", user=user,
+                               price=300, image="image.net.url")
+        response = client.get('/product/vendor/' + str(user.id))
+        self.assertContains(
+            response, 'Airmax shoes', status_code=200)
+
+    def test_products_page_with_product_not_vendor(self):
+        client = Client()
+        response = client.get('/product/vendor/1')
+        self.assertNotContains(
+            response, 'Airmax shoes', status_code=200)

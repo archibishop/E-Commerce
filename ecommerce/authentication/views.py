@@ -75,4 +75,4 @@ def create_user(form):
         'first_name'),
         last_name=form.cleaned_data.get(
         'last_name'))
-    return user
+    return user  
