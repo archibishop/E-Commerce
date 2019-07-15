@@ -57,3 +57,16 @@ class ProductsTestCase(TestCase):
         response = client.get('/product/category/shoes')
         self.assertContains(
             response, 'Airmax shoes', status_code=200)
+
+    def test_view_product(self):
+        client = Client()
+        user = User.objects.create_user(username='user_name',
+                                        email='email',
+                                        password='password',
+                                        first_name='first_name',
+                                        last_name='last_name')
+        product = Product.objects.create(product_name="Airmax shoes", user=user,
+                               price=300, image="image.net.url")                    
+        response = client.get('/product/' + str(product.id))
+        self.assertContains(
+            response, 'Airmax shoes', status_code=200)

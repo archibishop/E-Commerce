@@ -13,3 +13,4 @@ class Product(models.Model):
     price = models.IntegerField()
     image = models.CharField(max_length=100)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+    description = models.CharField(max_length=600)

@@ -7,6 +7,8 @@ urlpatterns = [
          name='products-vendor'),
     path('category/<str:category_name>', views.ProductsCategoryListView.as_view(),
          name='products-category'),
+    path('<int:pk>', views.ProductDetailView.as_view(),
+         name='product-item'),
 ]
 
 app_name = 'product'
