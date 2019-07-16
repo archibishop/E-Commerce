@@ -5,6 +5,7 @@ from authentication.models import Person
 from product.models import Category
 from .models import Orders
 from django.contrib import messages
+from django.views.generic.list import ListView
 import json
 # Create your views here.
 
@@ -29,6 +30,26 @@ class OrderView(View):
             request, 'Order was successfully made')
         request.session['selected_items'] = []
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+class OrderHistoryView(View):
+    template_name = 'order_history.html'
+
+    def get(self, request, *args, **kwargs):
+        queryset = Orders.objects.filter(
+            user__id=self.request.user.id)
+        decoder = json.decoder.JSONDecoder()
+        orders_list = []
+        for item in queryset:
+            new_list = decoder.decode(item.items)
+            obj = {
+                'id': item.id,
+                'items': new_list,
+                'total': item.total
+            }
+            orders_list.append(obj)
+        return render(request, self.template_name, {'vendors': get_vendors(),
+                 'categories': get_categories(), 'orders_list': orders_list})
 
 
 def get_vendors():
