@@ -1,0 +1,43 @@
+{% extends 'base_layout.html' %}
+
+{% block content %}
+    <h1 class="text-center mt-5">Shopping cart</h1>
+    
+    <table class="table mt-5 text-center">
+        <thead>
+            <tr>
+                <th scope="col">#(Quantity)</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Category</th>
+                <th scope="col">Remove Item</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in request.session|get_item:"selected_items"%}
+            <tr>
+                <th ><input name="quantity" type="number" min="1" value="1"></th>
+                <td >{{ item|get_item:"name" }}</td>
+                <td>{{ item|get_item:"price" }}</td>
+                <td >{{ item|get_item:"category" }}</td>
+                <td><a class="" href="{% url 'product:product-cart-remove' item|get_item:'id' %}">x</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="text-center mt-5">
+        <a class="btn btn-lg btn-outline-primary " href="#">Checkout</a>
+    </div>
+
+    <footer class="pt-4 my-md-5 pt-md-5 border-top">
+        <div class="row">
+            <div class="col-12 col-md">
+                <img class="mb-2"
+                    src="https://stackpath.bootstrapcdn.com/bootstrap//docs/4.3/assets/brand/bootstrap-solid.svg" alt=""
+                    width="24" height="24">
+                <small class="d-block mb-3 text-muted">&copy; Duuka 2019</small>
+            </div>
+        </div>
+    </footer>
+{% endblock %}
