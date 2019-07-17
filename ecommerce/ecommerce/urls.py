@@ -21,4 +21,5 @@ urlpatterns = [
     path('', include('authentication.urls'), name='home'),
     path('product/', include('product.urls', namespace="product"), name='product'),
     path('orders/', include('order.urls', namespace="order"), name='order'),
+    path('rate/', include('rating.urls', namespace="rate"), name='rate'),
 ]

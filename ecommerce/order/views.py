@@ -2,10 +2,12 @@ from django.shortcuts import render
 from django.views import View
 from django.http import HttpResponseRedirect
 from authentication.models import Person
-from product.models import Category
+from product.models import Category, Product
+from rating.models import Ratings
 from .models import Orders
 from django.contrib import messages
 from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
 import json
 from easy_pdf.views import PDFTemplateView
 # Create your views here.
@@ -91,6 +93,25 @@ class GeneratePDFView(PDFTemplateView):
         context['order'] = order
         context['request'] = self.request
         return context
+
+
+class OrderProductDetailView(View):
+    template_name = 'ordered_product.html'
+
+    def get(self, request, *args, **kwargs):
+        product = Product.objects.get(id=kwargs['pk'])
+        order = Orders.objects.get(id=kwargs['order_id'])
+        rating_exists = False
+        rating = Ratings.objects.filter(
+            user=self.request.user, product=product, order=order)
+        if len(rating) > 0:
+            rating_exists = True
+        return render(request, self.template_name, {'vendors': get_vendors(),
+                                                    'categories': get_categories(),
+                                                    'product': product,
+                                                    'rate': rating_exists,
+                                                    'order_id': kwargs['order_id']})
+
         
 def get_vendors():
     vendors = Person.objects.filter(customer=False)

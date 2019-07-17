@@ -1,0 +1,48 @@
+{% extends 'base_layout.html' %}
+{% load static %}
+
+{% block content %}
+<h1 class="text-center">{{ product.product_name }} - $ {{ product.price }} </h1>
+
+<div class="row text-center mt-5">
+    <div class="col-sm-4">
+        <div class="card mb-4 shadow-sm">
+            <img class="card-img-top p-4 center-block" src="{% static 'smarttv.jpeg' %}" alt="Imsge Unavailable">
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <H4>Description</H4>
+        <p class="mt-4">{{ product.description }}</p>
+        {% if rate %}
+        <h4 class="text-center text-muted mt-5"> You already rated this ordered item</h4>
+        {% else %}
+        <form method="POST" action="{% url 'rate:rate-product' %}">
+            {% csrf_token %}
+            <div class="row center-block">
+                <h5 class="rating text-center">
+                    <input type="hidden" id="product_id" name="product_id" value="{{ product.id }}" />
+                    <input type="hidden" id="order_id" name="order_id" value="{{ order_id }}" />
+                    <input type="radio" id="star10" name="rating" value="5" /><label for="star10" title="Rocks!">5 stars</label>
+                    <input type="radio" id="star9" name="rating" value="4" /><label for="star9" title="Rocks!">4 stars</label>
+                    <input type="radio" id="star8" name="rating" value="3" /><label for="star8" title="Pretty good">3 stars</label>
+                    <input type="radio" id="star7" name="rating" value="2" /><label for="star7" title="Pretty good">2 stars</label>
+                    <input type="radio" id="star6" name="rating" value="1" /><label for="star6" title="Meh">1 star</label>
+                </h5>
+            </div>
+            <button class="btn btn-lg btn-outline-primary mb-5 mt-3" type="submit">Rate Product</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+
+<footer class="pt-4 my-md-5 pt-md-5 border-top">
+    <div class="row">
+        <div class="col-12 col-md">
+            <img class="mb-2"
+                src="https://stackpath.bootstrapcdn.com/bootstrap//docs/4.3/assets/brand/bootstrap-solid.svg" alt=""
+                width="24" height="24">
+            <small class="d-block mb-3 text-muted">&copy; Duuka 2019</small>
+        </div>
+    </div>
+</footer>
+{% endblock %}

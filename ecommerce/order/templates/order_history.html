@@ -5,7 +5,7 @@
 <table class="table mt-5 text-center">
     <thead>
         <tr>
-            <th scope="col">#(Order Id)</th>
+            <th scope="col">#(Order No.)</th>
             <th scope="col">Order Total</th>
             <th scope="col">Ordered items</th>
             <th scope="col"></th>
@@ -18,7 +18,7 @@
                 <td>{{ order.total }}</td>
                 <td>
                     {% for item in order.items %}
-                    <span class="badge badge-secondary">{{ item.name }}</span>
+                    <a class="badge badge-secondary" href="{% url 'order:order-product-item' item.id order.id %}">{{ item.name }}</a>
                     {% endfor %}
                 </td>
                 <td>
