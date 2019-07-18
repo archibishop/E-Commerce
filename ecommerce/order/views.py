@@ -24,6 +24,7 @@ class OrderView(View):
         total = 0
         count = 0 
         for item in items:
+            item['status_delivered'] = False
             item['quantity'] = quantity_list[count]
             item_total = int(quantity_list[count]) * int(item['price'])
             total = total + item_total
@@ -40,20 +41,45 @@ class OrderHistoryView(View):
     template_name = 'order_history.html'
 
     def get(self, request, *args, **kwargs):
-        queryset = Orders.objects.filter(
-            user__id=self.request.user.id)
-        decoder = json.decoder.JSONDecoder()
+        person = Person.objects.get(user=self.request.user)
         orders_list = []
-        for item in queryset:
-            new_list = decoder.decode(item.items)
-            obj = {
-                'id': item.id,
-                'items': new_list,
-                'total': item.total
-            }
-            orders_list.append(obj)
+        status_delivered = False
+        if person.customer:
+            queryset = Orders.objects.filter(
+                user__id=self.request.user.id)
+            decoder = json.decoder.JSONDecoder()
+            for item in queryset:
+                new_list = decoder.decode(item.items)
+                obj = {
+                    'id': item.id,
+                    'items': new_list,
+                    'total': item.total
+                }
+                orders_list.append(obj)
+        else: 
+            queryset = Orders.objects.all()
+            decoder = json.decoder.JSONDecoder()
+            for item in queryset:
+                new_list = decoder.decode(item.items)
+                final_list = []
+                new_total = 0
+                for item_pdt in new_list:
+                    product = Product.objects.get(id=item_pdt['id'])
+                    if product.user.id == self.request.user.id:
+                        final_list.append(item_pdt)
+                        new_total =+ (int(item_pdt['price']) * int(item_pdt['quantity']))
+                if len(final_list) > 0:
+                    obj = {
+                        'id': item.id,
+                        'items': final_list,
+                        'total': new_total
+                    }
+                    status_delivered = item_pdt['status_delivered']
+                    orders_list.append(obj)
+
         return render(request, self.template_name, {'vendors': get_vendors(),
-                 'categories': get_categories(), 'orders_list': orders_list})
+                 'categories': get_categories(), 'orders_list': orders_list, 
+                 'person': person, 'status': status_delivered})
 
 
 class OrderInvoiceView(View):
@@ -101,6 +127,7 @@ class OrderProductDetailView(View):
     def get(self, request, *args, **kwargs):
         product = Product.objects.get(id=kwargs['pk'])
         order = Orders.objects.get(id=kwargs['order_id'])
+        person = Person.objects.get(user=self.request.user)
         rating_exists = False
         rating = Ratings.objects.filter(
             user=self.request.user, product=product, order=order)
@@ -110,8 +137,23 @@ class OrderProductDetailView(View):
                                                     'categories': get_categories(),
                                                     'product': product,
                                                     'rate': rating_exists,
-                                                    'order_id': kwargs['order_id']})
+                                                    'order_id': kwargs['order_id'],
+                                                    'person': person})
 
+
+class OrderRequestCompleteView(View):
+    def get(self, request, *args, **kwargs):
+        obj = Orders.objects.get(
+            id=self.kwargs['id'])
+        decoder = json.decoder.JSONDecoder()
+        obj_items = decoder.decode(obj.items)
+        for item in obj_items:
+            product = Product.objects.get(id=item['id'])
+            if product.user.id == self.request.user.id:
+                item['status_delivered'] = True
+        new_obj_items = json.dumps(obj_items)
+        Orders.objects.filter(id=self.kwargs['id']).update(items=new_obj_items)
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
         
 def get_vendors():
     vendors = Person.objects.filter(customer=False)

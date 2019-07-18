@@ -9,6 +9,8 @@ urlpatterns = [
          name='order-generate-pdf'),
     path('product/<int:pk>/<int:order_id>', views.OrderProductDetailView.as_view(),
          name='order-product-item'),
+    path('request/<int:id>', views.OrderRequestCompleteView.as_view(),
+         name='order-request'),
 ]
 
 app_name = 'order'

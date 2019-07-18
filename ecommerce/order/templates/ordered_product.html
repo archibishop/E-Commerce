@@ -13,6 +13,7 @@
     <div class="col-sm-8">
         <H4>Description</H4>
         <p class="mt-4">{{ product.description }}</p>
+        {% if person.customer %}
         {% if rate %}
         <h4 class="text-center text-muted mt-5"> You already rated this ordered item</h4>
         {% else %}
@@ -31,6 +32,7 @@
             </div>
             <button class="btn btn-lg btn-outline-primary mb-5 mt-3" type="submit">Rate Product</button>
         </form>
+        {% endif %}
         {% endif %}
     </div>
 </div>

@@ -12,8 +12,19 @@ class ProductListView(ListView):
     model = Product
     template_name = 'product_list.html'
 
+    def get_queryset(self):
+        queryset = Product.objects.all()
+        if self.request.user.is_authenticated:
+            person = Person.objects.get(user=self.request.user)
+            if not person.customer:
+                queryset = Product.objects.filter(user_id=self.request.user.id)
+        return queryset
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            person = Person.objects.get(user=self.request.user)
+            context['person'] = person
         context['vendors'] = get_vendors()
         context['categories'] = get_categories()
         return context
@@ -55,6 +66,9 @@ class ProductDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            person = Person.objects.get(user=self.request.user)
+            context['person'] = person
         context['vendors'] = get_vendors()
         context['categories'] = get_categories()
         return context
