@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import View
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from authentication.models import Person
 from product.models import Category, Product
 from rating.models import Ratings
@@ -8,6 +8,7 @@ from .models import Orders
 from django.contrib import messages
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
+import csv
 import json
 from easy_pdf.views import PDFTemplateView
 # Create your views here.
@@ -154,6 +155,28 @@ class OrderRequestCompleteView(View):
         new_obj_items = json.dumps(obj_items)
         Orders.objects.filter(id=self.kwargs['id']).update(items=new_obj_items)
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+class OrderCsvView(View):
+    def get(self, request, *args, **kwargs):
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="somefilename.csv"'
+
+        writer = csv.writer(response)
+
+        obj = Orders.objects.get(
+            id=self.kwargs['id'])
+        decoder = json.decoder.JSONDecoder()
+        obj_items = decoder.decode(obj.items)
+        for item in obj_items:
+            csv_list = []
+            csv_list.append({'order_id': self.kwargs['id']})
+            
+            product = Product.objects.get(id=item['id'])
+            if product.user.id == self.request.user.id:
+                csv_list.append(item)
+            writer.writerow(csv_list)
+        return response
         
 def get_vendors():
     vendors = Person.objects.filter(customer=False)

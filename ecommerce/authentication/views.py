@@ -10,7 +10,7 @@ from .forms import SignUpForm, LoginForm
 
 # Create your views here.
 def index(request):
-    return render(request, 'main_page.html')
+    return HttpResponseRedirect(reverse('product:product-list'))
 
 
 class SignUp(View):
