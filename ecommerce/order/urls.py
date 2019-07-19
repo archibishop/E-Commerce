@@ -13,6 +13,7 @@ urlpatterns = [
          name='order-request'),
     path('csv/<int:id>', views.OrderCsvView.as_view(),
          name='order-csv'),
+    path('card/<int:order_id>', views.ChargeView.as_view(), name='order-card'),
 ]
 
 app_name = 'order'
