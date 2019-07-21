@@ -13,9 +13,8 @@ before_script:
 script:
     - python ecommerce/manage.py makemigrations
     - python ecommerce/manage.py migrate
-    - python ecommerce/manage.py test
-    - pep8 ecommerce
-    - coverage run --source='.' ecommerce/manage.py test
+    - python ecommerce/manage.py test ecommerce
+    - coverage run --source='.' ecommerce/manage.py test ecommerce
     - coverage report
 
 after_success:
