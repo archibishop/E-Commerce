@@ -10,7 +10,7 @@
                 <div class="card-header">
                     <h4 class="my-0 font-weight-normal">{{ product.product_name }}</h4>
                 </div>
-                <img class="card-img-top p-4 center-block image-details" src="{% static 'smarttv.jpeg' %}" alt="Imsge Unavailable">
+                <img class="card-img-top p-4 center-block image-details" src="{{ product.image }}" alt="Imsge Unavailable">
                 <div class="card-body">
                     <h1 class="card-title pricing-card-title">${{ product.price }} <small class="text-muted">/ mo</small></h1>
                     <div class="row">

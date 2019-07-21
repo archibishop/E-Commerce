@@ -4,6 +4,8 @@ from .models import Product, Category
 from order.models import Orders
 from django.contrib.auth.models import User
 from authentication.models import Person
+from unittest.mock import patch
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 # Create your tests here.
 class ProductsTestCase(TestCase):
@@ -113,6 +115,13 @@ class ProductsTestCase(TestCase):
 
     def test_remove_item_cart(self):
         client = Client()
+        user = User.objects.create_user(username='user_name',
+                                        email='email',
+                                        password='password',
+                                        first_name='first_name',
+                                        last_name='last_name')
+        Person.objects.create(user=user, customer=True)
+        client.login(username='user_name', password='password')
         response = client.get('/product/list')
         response = client.post('/product/cart', {'product_id': 1,
                                                  'product_name': "Airmax shoes",
@@ -171,3 +180,72 @@ class ProductsTestCase(TestCase):
         response = client.get('/orders/invoice/' + str(orders[0].id))
         self.assertContains(
             response, 'Your Order Invoice', status_code=200)
+
+    def test_create_product_page_displays(self):
+        client = Client()
+        user = User.objects.create_user(username='user_name',
+                                        email='email',
+                                        password='password',
+                                        first_name='first_name',
+                                        last_name='last_name')
+        Person.objects.create(user=user, customer=True)
+        client.login(username='user_name', password='password')
+        response = client.get('/product/create')
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_product_page_displays(self):
+        client = Client()
+        user = User.objects.create_user(username='user_name',
+                                        email='email',
+                                        password='password',
+                                        first_name='first_name',
+                                        last_name='last_name')
+        Person.objects.create(user=user, customer=True)
+        product = Product.objects.create(product_name="Airmax shoes", user=user,
+                                         price=300, image="image.net.url")
+        client.login(username='user_name', password='password')
+        response = client.get('/product/update/'+ str(product.id))
+        self.assertEqual(response.status_code, 200)
+
+    @patch('cloudinary.uploader.upload')
+    def test_create_product(self, cloudinary_obj):
+        client = Client()
+        cloudinary_obj.return_value = {'url': 'http://www.google.com' }
+        user = User.objects.create_user(username='user_name',
+                                        email='email',
+                                        password='password',
+                                        first_name='first_name',
+                                        last_name='last_name')
+        Person.objects.create(user=user, customer=True)
+        category = Category.objects.create(category_name="shoes")
+        client.login(username='user_name', password='password')
+        image_file = SimpleUploadedFile("file.txt", b"file_content")
+        response = client.post('/product/create', {'pdt-name': 'Airmax shoes',
+                                                   'price': '9000',
+                                                   'desc': 'description',
+                                                   'image': image_file,
+                                                   'category': 'shoes'})
+        self.assertEqual(response.status_code, 200)
+
+    @patch('cloudinary.uploader.upload')
+    def test_update_product(self, cloudinary_obj):
+        client = Client()
+        cloudinary_obj.return_value = {'url': 'http://www.google.com' }
+        user = User.objects.create_user(username='user_name',
+                                        email='email',
+                                        password='password',
+                                        first_name='first_name',
+                                        last_name='last_name')
+        Person.objects.create(user=user, customer=True)
+        category = Category.objects.create(category_name="shoes")
+        product = Product.objects.create(product_name="Airmax shoes", user=user,
+                                        price=300, image="image.net.url")
+        client.login(username='user_name', password='password')
+        image_file = SimpleUploadedFile("file.txt", b"file_content")
+        response = client.post('/product/update/' + str(product.id),  {'pdt-name': "Airmax shoes",
+                                                                       'pdt-id': product.id,
+                                                                        'price': "9000",
+                                                                        'desc': "description",
+                                                                        'image': image_file,
+                                                                        'category': 'shoes'})
+        self.assertEqual(response.status_code, 302)

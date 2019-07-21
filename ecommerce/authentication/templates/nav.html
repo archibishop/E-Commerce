@@ -60,7 +60,7 @@
 
 {% if request.user.is_authenticated %}
     {% if not person.customer %}
-        <a class="btn btn-outline-primary mr-2" href="#">Add Product</a>
+        <a class="btn btn-outline-primary mr-2" href="{% url 'product:product-create' %}">Add Product</a>
     {% else %}    
         <a class="btn btn-outline-primary mr-2" href="{% url 'notifications:notifications-list' %}">
             <span class="badge badge-dark">
