@@ -8,7 +8,6 @@ from .models import Person
 from django.views import View
 from .forms import SignUpForm, LoginForm
 
-
 # Create your views here.
 def index(request):
     return render(request, 'main_page.html')
@@ -52,7 +51,7 @@ class Login(View):
                 login(request, user)
                 messages.success(
                     request, 'You have successfully Logged In')
-                return HttpResponseRedirect(reverse('index'))
+                return HttpResponseRedirect(reverse('product:product-list'))
         messages.error(request, 'User does not exist. Wrong Email/Password')
         return render(request, self.template_name, {'form': form})
 
@@ -62,7 +61,7 @@ class Logout(View):
         logout(request)
         messages.info(
             request, 'You have logged out of the system.')
-        return render(request, 'main_page.html')
+        return HttpResponseRedirect(reverse('product:product-list'))
 
 
 def create_user(form):
