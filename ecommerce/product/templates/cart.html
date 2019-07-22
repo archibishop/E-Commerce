@@ -14,7 +14,9 @@
             </tr>
         </thead>
         <tbody>
-            {% for item in request.session|get_item:"selected_items"%}
+            <form method="POST" action="{% url 'order:order-products' %}">
+            {% csrf_token %}
+            {% for item in request.session|get_item:"selected_items" %}
             <tr>
                 <th ><input name="quantity" type="number" min="1" value="1"></th>
                 <td >{{ item|get_item:"name" }}</td>
@@ -22,13 +24,26 @@
                 <td >{{ item|get_item:"category" }}</td>
                 <td><a class="" href="{% url 'product:product-cart-remove' item|get_item:'id' %}">x</a></td>
             </tr>
+            {% empty %}
+            <tr>
+            <h4 class="text-center text-muted mt-3">No Items in the cart</h4>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
-
+    {% if request.session|get_item:"selected_items"|length > 0 %}
+    {% if request.user.is_authenticated %}
     <div class="text-center mt-5">
-        <a class="btn btn-lg btn-outline-primary " href="#">Checkout</a>
+            <button class="btn btn-lg btn-outline-primary" href="{% url 'order:order-products' %}">Checkout</button>
+        </form>
     </div>
+    {% else %}
+    <div class="text-center mt-5">
+        <button class="btn btn-lg btn-outline-primary" href="{% url 'order:order-products' %}" disabled>Checkout</button>
+        <div class="text-muted mt-3">Please login to make order</div>
+    </div>
+    {% endif %}
+    {% endif %}
 
     <footer class="pt-4 my-md-5 pt-md-5 border-top">
         <div class="row">
