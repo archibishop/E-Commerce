@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
 
-
 class SignUpForm(forms.Form):
     first_name = forms.CharField()
     last_name = forms.CharField()

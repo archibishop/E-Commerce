@@ -1,0 +1,25 @@
+{% extends 'base_layout.html' %}
+{% load static %}
+
+{% block content %}
+    <h1 class="text-center mt-5">Products</h1>
+    <div class="row text-center mt-5">
+        {% for product in product_list %}
+        <div class="col-sm-4">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{ product.product_name }}s</h4>
+                </div>
+                <img class="card-img-top p-4 center-block" src="{% static 'smarttv.jpeg' %}" alt="Imsge Unavailable">
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">${{ product.price }} <small class="text-muted">/ mo</small></h1>
+                    <button type="button" class="btn btn-lg ml-2 mr-3 btn-outline-primary">View</button>
+                    <button type="button" class="btn btn-lg btn-outline-primary">Add To Cart</button>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <h3 class="text-muted text-center mt-5">No Products Available.</h3>
+        {% endfor %}
+    </div>
+{% endblock %}
