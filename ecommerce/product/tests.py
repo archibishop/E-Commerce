@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 from django.urls import reverse
-from .models import Product
+from .models import Product, Category
 from django.contrib.auth.models import User
 
 
@@ -41,4 +41,19 @@ class ProductsTestCase(TestCase):
         client = Client()
         response = client.get('/product/vendor/1')
         self.assertNotContains(
+            response, 'Airmax shoes', status_code=200)
+
+    def test_products_page_with_product_categroy(self):
+        client = Client()
+        user = User.objects.create_user(username='user_name',
+                                        email='email',
+                                        password='password',
+                                        first_name='first_name',
+                                        last_name='last_name')
+        category = Category.objects.create(category_name="shoes")
+        Product.objects.create(product_name="Airmax shoes", user=user,
+                               price=300, image="image.net.url",
+                               category=category)
+        response = client.get('/product/category/shoes')
+        self.assertContains(
             response, 'Airmax shoes', status_code=200)
