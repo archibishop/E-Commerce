@@ -57,7 +57,7 @@ class OrdersTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         response = client.get(reverse('order:order-history'))
         self.assertContains(
-            response, 'Download PDF', status_code=200)
+            response, 'PDF', status_code=200)
 
     def test_order_history_page_displays_no_orders(self):
         client = Client()

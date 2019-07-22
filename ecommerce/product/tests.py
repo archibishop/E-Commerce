@@ -1,6 +1,7 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from .models import Product, Category
+from order.models import Orders
 from django.contrib.auth.models import User
 
 # Create your tests here.
@@ -109,3 +110,48 @@ class ProductsTestCase(TestCase):
         session = client.session
         self.assertEqual(len(session['selected_items']), 0)
         self.assertEqual(response.status_code, 302)
+
+    def test_order_pdf_format(self):
+        client = Client()
+        user = User.objects.create_user(username='user_name',
+                                        email='email',
+                                        password='password',
+                                        first_name='first_name',
+                                        last_name='last_name')
+        client.login(username='user_name', password='password')
+        response = client.get('/product/list')
+        response = client.post('/product/cart', {'product_id': 1,
+                                                 'product_name': "Airmax shoes",
+                                                 'product_price': "9000",
+                                                 'product_category': "shoes"},
+                               HTTP_REFERER='http://www.google.com')
+        session = client.session
+        self.assertEqual(len(session['selected_items']), 1)
+        response = client.post(reverse('order:order-products'),
+                               {'quantity': 2}, HTTP_REFERER='http://www.google.com')
+        self.assertEqual(response.status_code, 302)
+        orders = Orders.objects.all()
+        response = client.get('/orders/pdf/' + str(orders[0].id))
+        self.assertEqual(response.get('Content-Type'), 'application/pdf')
+        self.assertEqual(response.status_code, 200)
+
+    def test_order_invoice(self):
+        client = Client()
+        user = User.objects.create_user(username='user_name',
+                                        email='email',
+                                        password='password',
+                                        first_name='first_name',
+                                        last_name='last_name')
+        client.login(username='user_name', password='password')
+        response = client.get('/product/list')
+        response = client.post('/product/cart', {'product_id': 1,
+                                                 'product_name': "Airmax shoes",
+                                                 'product_price': "9000",
+                                                 'product_category': "shoes"},
+                               HTTP_REFERER='http://www.google.com')
+        response = client.post(reverse('order:order-products'),
+                               {'quantity': 2}, HTTP_REFERER='http://www.google.com')
+        orders = Orders.objects.all()               
+        response = client.get('/orders/invoice/' + str(orders[0].id))
+        self.assertContains(
+            response, 'Your Order Invoice', status_code=200)

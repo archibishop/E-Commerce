@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+
+<body>
+
+    <div class="container">
+        <h1 class="text-center">Your Order Invoice</h1>
+        
+        <div class="container mt-4 mb-5">
+            <div class="card">
+                <div class="card-header">
+                    Invoice
+                    <strong> 01/01/01/2018 </strong>
+                    <span class="float-right"> <strong>Status:</strong> Cleared </span>
+        
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-sm-6">
+                            <h6 class="mb-3">From:</h6>
+                            <div>
+                                <strong>Duuka</strong>
+                            </div>
+                            <div>Bukoto Street</div>
+                            <div>Kampala, Uganda</div>
+                            <div>Email: Duuka@gmail.com</div>
+                            <div>Phone: +784 423 423</div>
+                        </div>
+        
+                        <div class="col-sm-6">
+                            <h6 class="mb-3">To:</h6>
+                            <div>
+                                <strong>{{ request.user.last_name }}</strong>
+                            </div>
+                            <div>Kampala, Uganda</div>
+                            <div>Email: {{ request.user.email}}</div>
+                            <div>Phone: +784 489 483</div>
+                        </div>
+                    </div>
+
+                    <br />
+                    <br />
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th >#</th>
+                                <th>Item</th>
+                                <th >Unit Cost</th>
+                                <th >Qty</th>
+                                <th >Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in order.items %}
+                            <tr>
+                                <td style="margin: 0 70px;">{{ forloop.counter }}</td>
+                                <td style="margin: 0 60px;">{{ item.name }}</td>
+                                <td style="margin: 0 60px;">{{ item.price }}</td>
+                                <td style="margin: 0 70px;">{{ item.quantity }}</td>
+                                <td style="margin: 0 60px;">{% multiply item.quantity item.price %}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                 
+                    <br />
+                    <div> <strong>Total Expenditure($)</strong> : {{ order.total }}</div> 
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

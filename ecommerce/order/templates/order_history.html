@@ -20,7 +20,11 @@
                     {% for item in order.items %}
                     <span class="badge badge-secondary">{{ item.name }}</span>
                     {% endfor %}
-                </td><a class="btn btn-outline-primary" href="#">Download PDF</a></td>
+                </td>
+                <td>
+                    <a class="btn btn-outline-primary" href="{% url 'order:order-invoice' order.id %}">View Invoice</a>
+                    <a class="btn btn-outline-primary" href="{% url 'order:order-generate-pdf' order.id %}">PDF</a>
+                </td>
             </tr>
         {% empty %}
             <tr>
