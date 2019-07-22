@@ -100,7 +100,6 @@ class CartRemoveItemView(View):
         request.session['selected_items'] = prev_list
         return render(request, self.template_name, {'vendors': get_vendors(), 'categories': get_categories()})
 
-
 def get_vendors():
     vendors = Person.objects.filter(customer=False)
     return vendors
