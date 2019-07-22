@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import Product, Category
 from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
 from authentication.models import Person
 
 # Create your views here.
@@ -38,6 +39,17 @@ class ProductsCategoryListView(ListView):
     def get_queryset(self):
         queryset = Product.objects.filter(category__category_name=self.kwargs['category_name'])
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['vendors'] = get_vendors()
+        context['categories'] = get_categories()
+        return context
+
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'product.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
