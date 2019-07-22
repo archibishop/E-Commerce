@@ -9,6 +9,9 @@ urlpatterns = [
          name='products-category'),
     path('<int:pk>', views.ProductDetailView.as_view(),
          name='product-item'),
+    path('cart', views.CartView.as_view(), name='products-cart'),
+    path('cart/remove/<int:id>', views.CartRemoveItemView.as_view(),
+         name='product-cart-remove'),
 ]
 
 app_name = 'product'

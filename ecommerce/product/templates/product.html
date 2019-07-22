@@ -13,7 +13,14 @@
         <div class="col-sm-8">
             <H4>Description</H4>
             <p class="mt-4">{{ product.description }}</p>
-            <a class="btn btn-lg btn-outline-primary mb-5 mt-3" href="#">Add To Cart</a>
+            <form method="POST" action="{% url 'product:products-cart' %}">
+                {% csrf_token %}
+                <input name="product_id" type=hidden value="{{ product.id }}">
+                <input name="product_name" type=hidden value="{{ product.product_name }}">
+                <input name="product_price" type=hidden value="{{ product.price }}">
+                <input name="product_category" type=hidden value="{{ product.category.category_name }}">
+                <button type=submit class="btn btn-lg btn-outline-primary ">Add To Cart</button>
+            </form>
         </div>
     </div>
 

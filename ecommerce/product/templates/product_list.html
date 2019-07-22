@@ -8,13 +8,26 @@
         <div class="col-sm-4">
             <div class="card mb-4 shadow-sm">
                 <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">{{ product.product_name }}s</h4>
+                    <h4 class="my-0 font-weight-normal">{{ product.product_name }}</h4>
                 </div>
                 <img class="card-img-top p-4 center-block" src="{% static 'smarttv.jpeg' %}" alt="Imsge Unavailable">
                 <div class="card-body">
                     <h1 class="card-title pricing-card-title">${{ product.price }} <small class="text-muted">/ mo</small></h1>
-                    <a class="btn btn-lg btn-outline-primary ml-2 mr-3" href="{% url 'product:product-item' product.id %}">View</a>
-                    <a class="btn btn-lg btn-outline-primary " href="#">Add To Cart</a>
+                    <div class="row">
+                        <div class="col-3 ml-4">
+                            <a class="btn btn-lg btn-outline-primary ml-2" href="{% url 'product:product-item' product.id %}">View</a>
+                        </div>
+                        <div class="col-8">
+                            <form method="POST" action="{% url 'product:products-cart' %}">
+                                {% csrf_token %}
+                                <input name="product_id" type=hidden value="{{ product.id }}">
+                                <input name="product_name" type=hidden value="{{ product.product_name }}">
+                                <input name="product_price" type=hidden value="{{ product.price }}">
+                                <input name="product_category" type=hidden value="{{ product.category.category_name }}">
+                                <button type=submit class="btn btn-lg btn-outline-primary ">Add To Cart</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
