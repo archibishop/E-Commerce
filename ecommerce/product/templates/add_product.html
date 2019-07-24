@@ -1,0 +1,50 @@
+{% extends 'base_layout.html' %}
+
+{% block content %}
+    <h1 class="text-center mt-5">{{ title }}</h1>
+    <form class="mt-5" action="{% url 'product:product-create' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% if messages %}
+        {% for message in messages %}
+        {% if message.tags == 'error' %}
+        <div class="alert alert-danger alert-dismissible fade show">
+            <strong>{{ message }}</strong>
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+
+        <div class="form-group">
+            <label for="product-name">Product Name</label>
+            <input type="pdt-name" class="form-control" id="pdt-name" name="pdt-name" value="{{ product.product_name }}">
+        </div>
+        <div class="form-group">
+            <label for="desc">Description</label>
+            <input type="text-area" class="form-control" id="desc" name="desc" value="{{ product.description }}">
+        </div>
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="text" class="form-control" id="price" name="price" value="{{ product.price }}">
+        </div>
+        <div class="form-group">
+            <label for="image">Upload Image</label>
+            <input type="file" name="image">
+        </div>
+        <input type="hidden" id="pdt-id" name="pdt-id" value="{{ product.id }}">
+        <div class="form-group">
+            <label for="category">Category</label>
+            <select class="form-control" name="category" id="category">
+                {% for category in categories %}
+                    {% if product.category.category_name == category.category_name %}
+                        <option  name="category" selected>{{ category.category_name }}</option>
+                    {% else %}
+                        <option  name="category">{{ category.category_name }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+    </form>
+{% endblock %}

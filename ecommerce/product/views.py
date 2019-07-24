@@ -7,7 +7,10 @@ from authentication.models import Person
 from django.http import HttpResponseRedirect
 from django.conf import settings
 from notifications.models import Notification
-
+import cloudinary
+import os
+from django.contrib import messages
+from django.urls import reverse
 # Create your views here.
 
 class ProductListView(ListView):
@@ -104,7 +107,6 @@ class CartView(View):
     def post(self, request, *args, **kwargs):
         if 'payment' in request.POST:
             HttpResponseRedirect(request.META['HTTP_REFERER'])
-
         new_item = {
             'id': request.POST['product_id'],
             'name': request.POST['product_name'],
@@ -137,6 +139,54 @@ class CartRemoveItemView(View):
         return render(request, self.template_name, {'vendors': get_vendors()
                                                     , 'categories': get_categories()
                                                     , 'num_notifications': num_notifications})
+
+class ProductCreateView(View):
+    template_name = 'add_product.html'
+    
+    def get(self, request, *args, **kwargs):
+        categories = Category.objects.all()
+        return render(request, self.template_name, {'categories': categories
+                                                    ,'title': 'Add Product'})
+
+    def post(self, request, *args, **kwargs):
+        myfile = request.FILES['image']
+        image_url = cloudinary.uploader.upload(myfile)['url']
+        category = Category.objects.get(category_name=request.POST['category'])
+        Product.objects.create(
+            user=request.user, 
+            product_name=request.POST['pdt-name'], 
+            description=request.POST['desc'], 
+            price=request.POST['price'],
+            image=image_url,
+            category=category)
+        messages.success(request, 'You have been successfully created a Product')
+        return render(request, self.template_name, {'categories': get_categories()
+                                                    ,'title': 'Add Product'})
+
+
+class ProductUpdateView(View):
+    template_name = 'update_product.html'
+
+    def get(self, request, *args, **kwargs):
+        product = Product.objects.get(id=kwargs['id'])
+        categories = Category.objects.all()
+        return render(request, self.template_name, {'categories': categories
+                                                    ,'product': product
+                                                    ,'title': 'Update Product'})
+
+    def post(self, request, *args, **kwargs):
+        myfile = request.FILES['image']
+        image_url = cloudinary.uploader.upload(myfile)['url']
+        category = Category.objects.get(category_name=request.POST['category'])
+        Product.objects.filter(id=request.POST['pdt-id']).update(
+            product_name=request.POST['pdt-name'],
+            description=request.POST['desc'],
+            price=request.POST['price'],
+            image=image_url,
+            category=category)
+        messages.success(
+            request, 'You have been successfully update the Product')
+        return HttpResponseRedirect(reverse('product:product-list'))
 
 def get_vendors():
     vendors = Person.objects.filter(customer=False)
