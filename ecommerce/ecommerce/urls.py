@@ -22,4 +22,6 @@ urlpatterns = [
     path('product/', include('product.urls', namespace="product"), name='product'),
     path('orders/', include('order.urls', namespace="order"), name='order'),
     path('rate/', include('rating.urls', namespace="rate"), name='rate'),
+    path('notifications/', include('notifications.urls',
+                                   namespace="notifications"), name='notifications'),
 ]

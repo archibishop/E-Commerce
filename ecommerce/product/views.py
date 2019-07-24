@@ -6,6 +6,7 @@ from django.views import View
 from authentication.models import Person
 from django.http import HttpResponseRedirect
 from django.conf import settings
+from notifications.models import Notification
 
 # Create your views here.
 
@@ -26,8 +27,11 @@ class ProductListView(ListView):
         if self.request.user.is_authenticated:
             person = Person.objects.get(user=self.request.user)
             context['person'] = person
+            context['num_notifications'] = get_num_notifications(
+                self.request.user)
         context['vendors'] = get_vendors()
         context['categories'] = get_categories()
+        
         return context
 
 
@@ -41,6 +45,11 @@ class ProductsVendorListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            person = Person.objects.get(user=self.request.user)
+            context['person'] = person
+            context['num_notifications'] = get_num_notifications(
+                self.request.user)
         context['vendors'] = get_vendors()
         context['categories'] = get_categories()
         return context
@@ -56,6 +65,11 @@ class ProductsCategoryListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            person = Person.objects.get(user=self.request.user)
+            context['person'] = person
+            context['num_notifications'] = get_num_notifications(
+                self.request.user)
         context['vendors'] = get_vendors()
         context['categories'] = get_categories()
         return context
@@ -69,6 +83,8 @@ class ProductDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
             person = Person.objects.get(user=self.request.user)
+            context['num_notifications'] = get_num_notifications(
+                self.request.user)
             context['person'] = person
         context['vendors'] = get_vendors()
         context['categories'] = get_categories()
@@ -82,7 +98,8 @@ class CartView(View):
         person = Person.objects.get(user=self.request.user)
         return render(request, self.template_name, {'vendors': get_vendors()
                              , 'categories': get_categories(), 'person': person
-                            , 'key': settings.STRIPE_PUBLISHABLE_KEY})
+                             ,'num_notifications': get_num_notifications(self.request.user)
+                             , 'key': settings.STRIPE_PUBLISHABLE_KEY})
 
     def post(self, request, *args, **kwargs):
         if 'payment' in request.POST:
@@ -114,7 +131,12 @@ class CartRemoveItemView(View):
                 if item['id'] == str(kwargs['id']):
                     prev_list.remove(item)
         request.session['selected_items'] = prev_list
-        return render(request, self.template_name, {'vendors': get_vendors(), 'categories': get_categories()})
+        num_notifications = 0
+        if self.request.user.is_authenticated:
+            num_notifications = get_num_notifications(self.request.user)
+        return render(request, self.template_name, {'vendors': get_vendors()
+                                                    , 'categories': get_categories()
+                                                    , 'num_notifications': num_notifications})
 
 def get_vendors():
     vendors = Person.objects.filter(customer=False)
@@ -124,3 +146,8 @@ def get_vendors():
 def get_categories():
     categories = Category.objects.all()
     return categories
+
+
+def get_num_notifications(user):
+    notifications = Notification.objects.filter(user=user, read=False)
+    return len(notifications)
