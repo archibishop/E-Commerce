@@ -11,6 +11,8 @@ urlpatterns = [
          name='order-product-item'),
     path('request/<int:id>', views.OrderRequestCompleteView.as_view(),
          name='order-request'),
+    path('csv/<int:id>', views.OrderCsvView.as_view(),
+         name='order-csv'),
 ]
 
 app_name = 'order'

@@ -31,7 +31,7 @@
                         {% else %}
                             <a class="btn btn-outline-primary" href="{% url 'order:order-request' order.id %}">Confirm Request Completion</a>
                         {% endif %}
-                            <a class="btn btn-outline-primary" href="#">CSV</a>
+                            <a class="btn btn-outline-primary" href="{% url 'order:order-csv' order.id %}">CSV</a>
                     {% endif %}
                 </td>
             </tr>

@@ -148,3 +148,38 @@ class OrdersTestCase(TestCase):
         self.assertContains(
             response, 'Rate Product', status_code=200)
         self.assertEqual(response.status_code, 200)
+
+
+    def test_order_csv(self):
+        client = Client()
+        user = User.objects.create_user(username='user_name',
+                                        email='email',
+                                        password='password',
+                                        first_name='first_name',
+                                        last_name='last_name')
+        Person.objects.create(user=user, customer=True)
+        user_seller = User.objects.create_user(username='user_seller',
+                                               email='email',
+                                               password='password',
+                                               first_name='first_name',
+                                               last_name='last_name')
+        Person.objects.create(user=user_seller, customer=False)
+        pdt = Product.objects.create(product_name="Airmax shoes", user=user_seller,
+                                     price=300, image="image.net.url")
+        client.login(username='user_name', password='password')
+        response = client.get('/product/list')
+        response = client.post('/product/cart', {'product_id': pdt.id,
+                                                 'product_name': "Airmax shoes",
+                                                 'product_price': "9000",
+                                                 'product_category': "shoes"},
+                               HTTP_REFERER='http://www.google.com')
+        session = client.session
+        self.assertEqual(len(session['selected_items']), 1)
+        response = client.post(reverse('order:order-products'),
+                               {'quantity': 2}, HTTP_REFERER='http://www.google.com')
+        client.login(username='user_seller', password='password')
+        orders = Orders.objects.all()
+        self.assertEqual(len(orders), 1)
+        self.assertEqual(response.status_code, 302)
+        response = client.get('/orders/csv/' + str(orders[0].id))
+        self.assertEqual(response.get('Content-Type'), 'text/csv')
