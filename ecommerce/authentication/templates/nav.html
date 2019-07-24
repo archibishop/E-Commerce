@@ -61,6 +61,13 @@
 {% if request.user.is_authenticated %}
     {% if not person.customer %}
         <a class="btn btn-outline-primary mr-2" href="#">Add Product</a>
+    {% else %}    
+        <a class="btn btn-outline-primary mr-2" href="{% url 'notifications:notifications-list' %}">
+            <span class="badge badge-dark">
+                {{ num_notifications }}
+            </span>
+            Notifications
+        </a>
     {% endif %}
     <a class="btn btn-outline-primary mr-2" href="{% url 'order:order-history' %}">Orders</a>
     <a class="mr-2" href="{% url 'log_out'%}">Sign Out</a>

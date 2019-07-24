@@ -9,6 +9,13 @@ from authentication.models import Person
 class ProductsTestCase(TestCase):
     def test_products_page_displays(self):
         client = Client()
+        user = User.objects.create_user(username='user_name',
+                                        email='email',
+                                        password='password',
+                                        first_name='first_name',
+                                        last_name='last_name')
+        Person.objects.create(user=user, customer=True)
+        client.login(username='user_name', password='password')
         response = client.get('/product/list')
         self.assertEqual(response.status_code, 200)
 
@@ -32,6 +39,8 @@ class ProductsTestCase(TestCase):
                                         password='password',
                                         first_name='first_name',
                                         last_name='last_name')
+        Person.objects.create(user=user, customer=True)
+        client.login(username='user_name', password='password')
         Product.objects.create(product_name="Airmax shoes", user=user,
                                price=300, image="image.net.url")
         response = client.get('/product/vendor/' + str(user.id))
@@ -52,6 +61,8 @@ class ProductsTestCase(TestCase):
                                         first_name='first_name',
                                         last_name='last_name')
         category = Category.objects.create(category_name="shoes")
+        Person.objects.create(user=user, customer=True)
+        client.login(username='user_name', password='password')
         Product.objects.create(product_name="Airmax shoes", user=user,
                                price=300, image="image.net.url",
                                category=category)
@@ -66,6 +77,8 @@ class ProductsTestCase(TestCase):
                                         password='password',
                                         first_name='first_name',
                                         last_name='last_name')
+        Person.objects.create(user=user, customer=True)
+        client.login(username='user_name', password='password')
         product = Product.objects.create(product_name="Airmax shoes", user=user,
                                price=300, image="image.net.url")                    
         response = client.get('/product/' + str(product.id))

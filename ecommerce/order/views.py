@@ -15,13 +15,19 @@ import stripe
 from django.conf import settings
 from django.urls import reverse
 from django.conf import settings
+from notifications.models import Notification
+from django.contrib.auth.models import User
 # Create your views here.
 
 class OrderView(View):
     template_name = 'order.html'
 
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name, {'vendors': get_vendors(), 'categories': get_categories()})
+        num_notifications = 0
+        if self.request.user.is_authenticated:
+            num_notifications = get_num_notifications(self.request.user)
+        return render(request, self.template_name, {'vendors': get_vendors(), 'categories': get_categories()
+                                                    , 'num_notifications': num_notifications})
 
     def post(self, request, *args, **kwargs):
         quantity_list = request.POST.getlist('quantity')
@@ -84,10 +90,13 @@ class OrderHistoryView(View):
                     }
                     status_delivered = item_pdt['status_delivered']
                     orders_list.append(obj)
-
+        num_notifications = 0
+        if self.request.user.is_authenticated:
+            num_notifications = get_num_notifications(self.request.user)
         return render(request, self.template_name, {'vendors': get_vendors(),
                  'categories': get_categories(), 'orders_list': orders_list, 
-                 'person': person, 'status': status_delivered})
+                 'person': person, 'status': status_delivered,
+                 'num_notifications': num_notifications})
 
 
 class OrderInvoiceView(View):
@@ -102,8 +111,12 @@ class OrderInvoiceView(View):
             'items': decoder.decode(obj.items),
             'total': obj.total
         }
+        num_notifications = 0
+        if self.request.user.is_authenticated:
+            num_notifications = get_num_notifications(self.request.user)
         return render(request, self.template_name, {'vendors': get_vendors(),
-                                'categories': get_categories(), 'order':order })
+                                'categories': get_categories(), 'order':order ,
+                                'num_notifications': num_notifications})
 
 
 class GeneratePDFView(PDFTemplateView):
@@ -141,12 +154,16 @@ class OrderProductDetailView(View):
             user=self.request.user, product=product, order=order)
         if len(rating) > 0:
             rating_exists = True
+        num_notifications = 0
+        if self.request.user.is_authenticated:
+            num_notifications = get_num_notifications(self.request.user)
         return render(request, self.template_name, {'vendors': get_vendors(),
                                                     'categories': get_categories(),
                                                     'product': product,
                                                     'rate': rating_exists,
                                                     'order_id': kwargs['order_id'],
-                                                    'person': person})
+                                                    'person': person,
+                                                    'num_notifications': num_notifications})
 
 
 class OrderRequestCompleteView(View):
@@ -155,12 +172,16 @@ class OrderRequestCompleteView(View):
             id=self.kwargs['id'])
         decoder = json.decoder.JSONDecoder()
         obj_items = decoder.decode(obj.items)
+        added_items = "These items ("
         for item in obj_items:
             product = Product.objects.get(id=item['id'])
             if product.user.id == self.request.user.id:
                 item['status_delivered'] = True
+                added_items = added_items + item['name'] + " ,"
         new_obj_items = json.dumps(obj_items)
+        added_items = added_items + ") have been processed by the vendor."
         Orders.objects.filter(id=self.kwargs['id']).update(items=new_obj_items)
+        Notification.objects.create(user=obj.user, message=added_items, read=False)
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
@@ -213,3 +234,8 @@ def get_vendors():
 def get_categories():
     categories = Category.objects.all()
     return categories
+
+
+def get_num_notifications(user):
+    notifications = Notification.objects.filter(user=user, read=False)
+    return len(notifications)
