@@ -24,9 +24,10 @@ class SignUp(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
+            customer = form.cleaned_data.get(
+                'customer')
             user = create_user(form)
-            Person.objects.create(user=user, customer=form.cleaned_data.get(
-                'customer'))
+            Person.objects.create(user=user, customer=customer)
             login(request, user)
             messages.success(request, 'You have been successfully logged in')
             return HttpResponseRedirect(reverse('index'))

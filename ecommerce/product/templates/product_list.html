@@ -14,19 +14,27 @@
                 <div class="card-body">
                     <h1 class="card-title pricing-card-title">${{ product.price }} <small class="text-muted">/ mo</small></h1>
                     <div class="row">
-                        <div class="col-3 ml-4">
-                            <a class="btn btn-lg btn-outline-primary ml-2" href="{% url 'product:product-item' product.id %}">View</a>
-                        </div>
-                        <div class="col-8">
-                            <form method="POST" action="{% url 'product:products-cart' %}">
-                                {% csrf_token %}
-                                <input name="product_id" type=hidden value="{{ product.id }}">
-                                <input name="product_name" type=hidden value="{{ product.product_name }}">
-                                <input name="product_price" type=hidden value="{{ product.price }}">
-                                <input name="product_category" type=hidden value="{{ product.category.category_name }}">
-                                <button type=submit class="btn btn-lg btn-outline-primary ">Add To Cart</button>
-                            </form>
-                        </div>
+                        {% if not person.customer and request.user.is_authenticated %}
+                            <div class="col-12">
+                                <a class="btn btn-lg btn-outline-primary ml-2" href="{% url 'product:product-item' product.id %}">View</a>
+                            </div>
+                        {% else %}
+                            <div class="col-3 ml-4">
+                                <a class="btn btn-lg btn-outline-primary ml-2" href="{% url 'product:product-item' product.id %}">View</a>
+                            </div>
+                        {% endif %}
+                        {% if person.customer or not request.user.is_authenticated %}
+                            <div class="col-8">
+                                <form method="POST" action="{% url 'product:products-cart' %}">
+                                    {% csrf_token %}
+                                    <input name="product_id" type=hidden value="{{ product.id }}">
+                                    <input name="product_name" type=hidden value="{{ product.product_name }}">
+                                    <input name="product_price" type=hidden value="{{ product.price }}">
+                                    <input name="product_category" type=hidden value="{{ product.category.category_name }}">
+                                    <button type=submit class="btn btn-lg btn-outline-primary ">Add To Cart</button>
+                                </form>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

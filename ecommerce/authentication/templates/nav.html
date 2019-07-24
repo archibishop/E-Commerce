@@ -59,9 +59,12 @@
 </a>
 
 {% if request.user.is_authenticated %}
-<a class="btn btn-outline-primary mr-2" href="{% url 'order:order-history' %}">Orders</a>
-<a class="mr-2" href="{% url 'log_out'%}">Sign Out</a>
+    {% if not person.customer %}
+        <a class="btn btn-outline-primary mr-2" href="#">Add Product</a>
+    {% endif %}
+    <a class="btn btn-outline-primary mr-2" href="{% url 'order:order-history' %}">Orders</a>
+    <a class="mr-2" href="{% url 'log_out'%}">Sign Out</a>
 {% else %}
-<a class="btn btn-outline-primary mr-2" href="{% url 'login_user' %}">Login</a>
-<a class="btn btn-outline-primary mr-2" href="{% url 'sign_up'%}">Sign Up</a>
+    <a class="btn btn-outline-primary mr-2" href="{% url 'login_user' %}">Login</a>
+    <a class="btn btn-outline-primary mr-2" href="{% url 'sign_up'%}">Sign Up</a>
 {% endif %}

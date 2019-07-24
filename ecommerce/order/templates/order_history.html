@@ -18,12 +18,21 @@
                 <td>{{ order.total }}</td>
                 <td>
                     {% for item in order.items %}
-                    <a class="badge badge-secondary" href="{% url 'order:order-product-item' item.id order.id %}">{{ item.name }}</a>
+                    <h5><a class="badge badge-secondary" href="{% url 'order:order-product-item' item.id order.id %}">{{ item.name }} <span class="badge badge-dark">{{ item.quantity }}</span></a></h5>
                     {% endfor %}
                 </td>
                 <td>
-                    <a class="btn btn-outline-primary" href="{% url 'order:order-invoice' order.id %}">View Invoice</a>
-                    <a class="btn btn-outline-primary" href="{% url 'order:order-generate-pdf' order.id %}">PDF</a>
+                    {% if person.customer %}
+                        <a class="btn btn-outline-primary" href="{% url 'order:order-invoice' order.id %}">View Invoice</a>
+                        <a class="btn btn-outline-primary" href="{% url 'order:order-generate-pdf' order.id %}">PDF</a>
+                    {% else %}
+                        {% if status %} 
+                            <button class="btn btn-outline-success" href="#" disabled>Request Completed</button>
+                        {% else %}
+                            <a class="btn btn-outline-primary" href="{% url 'order:order-request' order.id %}">Confirm Request Completion</a>
+                        {% endif %}
+                            <a class="btn btn-outline-primary" href="#">CSV</a>
+                    {% endif %}
                 </td>
             </tr>
         {% empty %}

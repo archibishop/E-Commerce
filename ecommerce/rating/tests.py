@@ -4,6 +4,7 @@ from .models import Orders
 from product.models import Product
 from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
+from authentication.models import Person
 
 
 # Create your tests here.
@@ -15,6 +16,7 @@ class RatingsTestCase(TestCase):
                                         password='password',
                                         first_name='first_name',
                                         last_name='last_name')
+        Person.objects.create(user=user, customer=True)
         client.login(username='user_name', password='password')
         product = Product.objects.create(product_name="Airmax shoes", user=user,
                                          price=300, image="image.net.url")
@@ -46,6 +48,7 @@ class RatingsTestCase(TestCase):
                                         password='password',
                                         first_name='first_name',
                                         last_name='last_name')
+        Person.objects.create(user=user, customer=True)
         client.login(username='user_name', password='password')
         product = Product.objects.create(product_name="Airmax shoes", user=user,
                                          price=300, image="image.net.url")

@@ -3,6 +3,7 @@ from django.urls import reverse
 from .models import Product, Category
 from order.models import Orders
 from django.contrib.auth.models import User
+from authentication.models import Person
 
 # Create your tests here.
 class ProductsTestCase(TestCase):
@@ -118,6 +119,7 @@ class ProductsTestCase(TestCase):
                                         password='password',
                                         first_name='first_name',
                                         last_name='last_name')
+        Person.objects.create(user=user, customer=True)
         client.login(username='user_name', password='password')
         response = client.get('/product/list')
         response = client.post('/product/cart', {'product_id': 1,
@@ -142,6 +144,7 @@ class ProductsTestCase(TestCase):
                                         password='password',
                                         first_name='first_name',
                                         last_name='last_name')
+        Person.objects.create(user=user, customer=True)
         client.login(username='user_name', password='password')
         response = client.get('/product/list')
         response = client.post('/product/cart', {'product_id': 1,
