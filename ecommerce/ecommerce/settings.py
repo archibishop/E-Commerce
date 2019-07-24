@@ -138,3 +138,6 @@ STATICFILES_DIRS = (
     # if your static files folder is named "staticfiles"
     os.path.join(BASE_DIR, 'static'),
 )
+
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
+STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY")

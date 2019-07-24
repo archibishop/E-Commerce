@@ -31,15 +31,39 @@
             {% endfor %}
         </tbody>
     </table>
+
     {% if request.session|get_item:"selected_items"|length > 0 %}
     {% if request.user.is_authenticated %}
+    <div class="container center-block">
+        <div class="row">
+            <div class="col-md-4 offset-md-4">
+    <h3 class="text-muted mt-4">Choose Payment Method</h3>    
+    
+    <div class="form-check">
+    <input class="form-check-input" type="radio" name="payment" id="payRadio1" value="cash" checked>
+    <label class="form-check-label" for="exampleRadios1">
+        Cash
+    </label>
+    </div>
+    <div class="form-check">
+    <input class="form-check-input" type="radio" name="payment" id="payRadio2" value="card">
+    <label class="form-check-label" for="exampleRadios2">
+        Card(Visa)
+    </label>
+    </div>
+    </div>
+    </div>
+    </div>
     <div class="text-center mt-5">
             <button class="btn btn-lg btn-outline-primary" href="{% url 'order:order-products' %}">Checkout</button>
+        
         </form>
+        
+        
     </div>
     {% else %}
     <div class="text-center mt-5">
-        <button class="btn btn-lg btn-outline-primary" href="{% url 'order:order-products' %}" disabled>Checkout</button>
+        <button class="btn btn-lg btn-outline-primary" href="{% url 'order:order-products' %}" disabled>Checkout (Cash)</button>
         <div class="text-muted mt-3">Please login to make order</div>
     </div>
     {% endif %}

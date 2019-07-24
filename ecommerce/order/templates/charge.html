@@ -1,0 +1,11 @@
+{% extends 'base_layout.html' %}
+
+{% block content %}
+    <h2>You are going to use your card to pay <solid>{{ total }}</solid></h2>
+
+    <form method="POST" action="{% url 'order:order-card' id %}" >
+        {% csrf_token %}
+        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="{{ key }}"
+            data-description="A Duuka Charge" data-amount="{{ total }}" data-locale="auto"></script>
+    </form>
+{% endblock %}

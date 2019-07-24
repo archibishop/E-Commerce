@@ -5,6 +5,7 @@ from django.views.generic.detail import DetailView
 from django.views import View
 from authentication.models import Person
 from django.http import HttpResponseRedirect
+from django.conf import settings
 
 # Create your views here.
 
@@ -78,10 +79,15 @@ class CartView(View):
     template_name = 'cart.html'
 
     def get(self, request, *args, **kwargs):
+        person = Person.objects.get(user=self.request.user)
         return render(request, self.template_name, {'vendors': get_vendors()
-                             , 'categories': get_categories()})
+                             , 'categories': get_categories(), 'person': person
+                            , 'key': settings.STRIPE_PUBLISHABLE_KEY})
 
     def post(self, request, *args, **kwargs):
+        if 'payment' in request.POST:
+            HttpResponseRedirect(request.META['HTTP_REFERER'])
+
         new_item = {
             'id': request.POST['product_id'],
             'name': request.POST['product_name'],
@@ -90,11 +96,7 @@ class CartView(View):
         }
         if 'selected_items' in request.session:
             prev_list = request.session['selected_items']
-            exists = False
-            for item in request.session['selected_items']:
-                if new_item['id'] == item['id']:
-                    exists = True        
-            if not exists:
+            if new_item not in request.session['selected_items']:
                 prev_list.append(new_item)
                 request.session['selected_items'] = prev_list
         else:

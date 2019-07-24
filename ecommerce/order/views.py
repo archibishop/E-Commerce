@@ -11,6 +11,10 @@ from django.views.generic.detail import DetailView
 import csv
 import json
 from easy_pdf.views import PDFTemplateView
+import stripe
+from django.conf import settings
+from django.urls import reverse
+from django.conf import settings
 # Create your views here.
 
 class OrderView(View):
@@ -31,7 +35,10 @@ class OrderView(View):
             total = total + item_total
             count = count + 1
         json_items = json.dumps(items)
-        Orders.objects.create(user=request.user, items=json_items, total=total)
+        order = Orders.objects.create(user=request.user, items=json_items, total=total)
+        if 'payment' in request.POST:
+            if request.POST['payment'] == 'card':
+                return HttpResponseRedirect(reverse('order:order-card', kwargs={'order_id': order.id}))
         messages.info(
             request, 'Order was successfully made')
         request.session['selected_items'] = []
@@ -177,6 +184,26 @@ class OrderCsvView(View):
                 csv_list.append(item)
             writer.writerow(csv_list)
         return response
+        
+class ChargeView(View):
+    def get(self, request, *args, **kwargs):
+        order = Orders.objects.get(id=kwargs['order_id'])
+        return render(request, 'charge.html', {'key': settings.STRIPE_PUBLISHABLE_KEY
+                                               , 'total': order.total, 'id': order.id})
+
+    def post(self, request, *args, **kwargs):
+        order = Orders.objects.get(id=kwargs['order_id'])
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        charge = stripe.Charge.create(
+            amount=order.total,
+            currency='usd',
+            description='A Django charge',
+            source=request.POST['stripeToken']
+        )
+        messages.info(
+            request, 'Order was successfully made')
+        request.session['selected_items'] = []
+        return HttpResponseRedirect(reverse('product:products-cart'))
         
 def get_vendors():
     vendors = Person.objects.filter(customer=False)
