@@ -209,6 +209,28 @@ class OrdersTestCase(TestCase):
         self.assertContains(
             response, 'You are going to use your card to pay', status_code=200)
 
+    def test_payment_card_redirection(self):
+        client = Client()
+        user = User.objects.create_user(username='user_name',
+                                        email='email',
+                                        password='password',
+                                        first_name='first_name',
+                                        last_name='last_name')
+        Person.objects.create(user=user, customer=True)
+        client.login(username='user_name', password='password')
+        response = client.get('/product/list')
+        response = client.post('/product/cart', {'product_id': 1,
+                                                 'product_name': "Airmax shoes",
+                                                 'product_price': "9000",
+                                                 'product_category': "shoes"},
+                               HTTP_REFERER='http://www.google.com')
+        session = client.session
+        self.assertEqual(len(session['selected_items']), 1)
+        response = client.post(reverse('order:order-products'),
+                               {'quantity': 2, 'payment': 'card'}
+                               , HTTP_REFERER='http://www.google.com')
+        self.assertEqual(response.status_code, 302)
+
     @patch('stripe.Charge.create')
     def test_charge_card_page_displays_post(self, stripe_create):
         client = Client()
