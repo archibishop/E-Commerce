@@ -207,6 +207,18 @@ class ProductsTestCase(TestCase):
         response = client.get('/product/update/'+ str(product.id))
         self.assertEqual(response.status_code, 200)
 
+    def test_cart_displays(self):
+        client = Client()
+        user = User.objects.create_user(username='user_name',
+                                        email='email',
+                                        password='password',
+                                        first_name='first_name',
+                                        last_name='last_name')
+        Person.objects.create(user=user, customer=True)
+        client.login(username='user_name', password='password')
+        response = client.get('/product/cart')
+        self.assertEqual(response.status_code, 200)
+
     @patch('cloudinary.uploader.upload')
     def test_create_product(self, cloudinary_obj):
         client = Client()

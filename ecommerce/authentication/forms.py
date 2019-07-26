@@ -1,14 +1,18 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext_lazy 
 
 class SignUpForm(forms.Form):
-    first_name = forms.CharField()
-    last_name = forms.CharField()
-    user_name = forms.CharField()
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput())
-    confirm_password = forms.CharField(widget=forms.PasswordInput())
-    customer = forms.BooleanField(initial=False,  required=False)
+    first_name = forms.CharField(label=ugettext_lazy('firstname'))
+    last_name = forms.CharField(label=ugettext_lazy('lastname'))
+    user_name = forms.CharField(label=ugettext_lazy('username'))
+    email = forms.EmailField(label=ugettext_lazy('email'))
+    password = forms.CharField(
+        widget=forms.PasswordInput(), label=ugettext_lazy('password'))
+    confirm_password = forms.CharField(
+        widget=forms.PasswordInput(), label=ugettext_lazy('confirm password'))
+    customer = forms.BooleanField(
+        initial=False,  required=False, label=ugettext_lazy('customer'))
 
     first_name.widget.attrs.update({'class': 'form-control'})
     last_name.widget.attrs.update({'class': 'form-control'})
@@ -37,8 +41,9 @@ class SignUpForm(forms.Form):
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput())
+    username = forms.CharField(label=ugettext_lazy('Username'))
+    password = forms.CharField(
+        widget=forms.PasswordInput(), label=ugettext_lazy('password'))
 
     username.widget.attrs.update({'class': 'form-control'})
     password.widget.attrs.update({'class': 'form-control'})

@@ -17,6 +17,7 @@ from django.urls import reverse
 from django.conf import settings
 from notifications.models import Notification
 from django.contrib.auth.models import User
+from django.utils.translation import gettext
 # Create your views here.
 
 class OrderView(View):
@@ -45,8 +46,8 @@ class OrderView(View):
         if 'payment' in request.POST:
             if request.POST['payment'] == 'card':
                 return HttpResponseRedirect(reverse('order:order-card', kwargs={'order_id': order.id}))
-        messages.info(
-            request, 'Order was successfully made')
+        message_output = gettext('Order was successfully made')
+        messages.info(request, message_output)
         request.session['selected_items'] = []
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
@@ -221,8 +222,9 @@ class ChargeView(View):
             description='A Django charge',
             source=request.POST['stripeToken']
         )
+        message_output = gettext('Order was successfully made')
         messages.info(
-            request, 'Order was successfully made')
+            request, message_output)
         request.session['selected_items'] = []
         return HttpResponseRedirect(reverse('product:products-cart'))
         

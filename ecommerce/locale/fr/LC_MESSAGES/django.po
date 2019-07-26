@@ -1,0 +1,368 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-07-26 13:50+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: authentication/forms.py:6
+msgid "firstname"
+msgstr "Prénom"
+
+#: authentication/forms.py:7
+#, fuzzy
+#| msgid "Username"
+msgid "lastname"
+msgstr "nom de famille"
+
+#: authentication/forms.py:8
+#, fuzzy
+#| msgid "Username"
+msgid "username"
+msgstr "Nom d'utilisateur"
+
+#: authentication/forms.py:9
+msgid "email"
+msgstr "email"
+
+#: authentication/forms.py:11 authentication/forms.py:46
+msgid "password"
+msgstr "mot de passe"
+
+#: authentication/forms.py:13
+#, fuzzy
+#| msgid "password"
+msgid "confirm password"
+msgstr "Confirmez le mot de passe"
+
+#: authentication/forms.py:15
+msgid "customer"
+msgstr "client"
+
+#: authentication/forms.py:44
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+#: authentication/templates/login.html:5 authentication/templates/nav.html:88
+msgid "Login"
+msgstr "S'identifier"
+
+#: authentication/templates/login.html:28
+#: authentication/templates/sign_up.html:43
+#: product/templates/add_product.html:49
+#: product/templates/update_product.html:49
+msgid "Submit"
+msgstr "Soumettre"
+
+#: authentication/templates/nav.html:12
+msgid "Languages"
+msgstr "Langues"
+
+#: authentication/templates/nav.html:16 ecommerce/settings.py:165
+msgid "English"
+msgstr "English"
+
+#: authentication/templates/nav.html:17 ecommerce/settings.py:166
+msgid "French"
+msgstr "French"
+
+#: authentication/templates/nav.html:24 product/templates/add_product.html:38
+#: product/templates/cart.html:13 product/templates/update_product.html:38
+msgid "Category"
+msgstr "Catégorie"
+
+#: authentication/templates/nav.html:31
+msgid "No Available Category"
+msgstr "Aucune catégorie disponible"
+
+#: authentication/templates/nav.html:38
+msgid "Vendors"
+msgstr "Vendeurs"
+
+#: authentication/templates/nav.html:45
+msgid "No Available Vnedors"
+msgstr "Aucun fournisseur disponible"
+
+#: authentication/templates/nav.html:52
+msgid "Support"
+msgstr "Soutien"
+
+#: authentication/templates/nav.html:55
+msgid "Help"
+msgstr "Aidez-moi"
+
+#: authentication/templates/nav.html:56
+msgid "About Us"
+msgstr "À propos de nous"
+
+#: authentication/templates/nav.html:57
+msgid "Contact"
+msgstr "Contact"
+
+#: authentication/templates/nav.html:76
+msgid "Add Product"
+msgstr "Ajouter un produit"
+
+#: authentication/templates/nav.html:85
+msgid "Orders"
+msgstr "Ordres"
+
+#: authentication/templates/nav.html:86
+msgid "Sign Out"
+msgstr "Déconnexion"
+
+#: authentication/templates/nav.html:89 authentication/templates/sign_up.html:5
+msgid "Sign Up"
+msgstr "S'inscrire"
+
+#: authentication/templates/sign_up.html:30
+msgid "We wll never share your email with anyone else"
+msgstr "Nous ne partagerons jamais votre email avec quelqu'un d'autre"
+
+#: authentication/views.py:34
+msgid "You have been successfully logged in."
+msgstr "Vous avez été connecté avec succès"
+
+#: authentication/views.py:57
+msgid "You have successfully Logged In."
+msgstr "Vous vous êtes connecté avec succès"
+
+#: authentication/views.py:61
+msgid "User does not exist. Wrong Email/Password."
+msgstr "L'utilisateur n'existe pas. Mauvais email / mot de passe"
+
+#: authentication/views.py:69
+msgid "You have logged out of the system."
+msgstr "Vous vous êtes déconnecté du système"
+
+#: authentication/views.py:80
+msgid "You have changed the language."
+msgstr "Vous avez changé la langue"
+
+#: notifications/templates/notification.html:6
+msgid "Notification"
+msgstr "Notification"
+
+#: notifications/templates/notification.html:12
+msgid "Created At"
+msgstr "Créé à"
+
+#: notifications/templates/notification.html:13
+#: notifications/templates/notifications.html:14
+#: notifications/templates/notifications.html:16
+#: order/templates/order_invoice.html:12 order/templates/pdf.html:15
+msgid "Status"
+msgstr "Statut"
+
+#: notifications/templates/notification.html:13
+#: notifications/templates/notifications.html:14
+msgid "Read"
+msgstr "Lis"
+
+#: notifications/templates/notifications.html:6
+msgid "Notifications"
+msgstr "Les notifications"
+
+#: notifications/templates/notifications.html:16
+msgid "Unread"
+msgstr "Non lu"
+
+#: order/templates/charge.html:5
+msgid "You are going to use your card to pay"
+msgstr "Vous allez utiliser votre carte pour payer"
+
+#: order/templates/order_history.html:5 order/templates/pdf.html:48
+#: order/templates/pdf.html:49 order/templates/pdf.html:50
+#: order/templates/pdf.html:51
+msgid "Order History"
+msgstr "Historique des commandes"
+
+#: order/templates/order_history.html:9
+msgid "Order No."
+msgstr "Numéro de commande"
+
+#: order/templates/order_history.html:10
+msgid "Order Total"
+msgstr "Total de la commande"
+
+#: order/templates/order_history.html:11
+msgid "Ordered items"
+msgstr "Articles commandés"
+
+#: order/templates/order_history.html:27
+msgid "View Invoice"
+msgstr "Voir la facture"
+
+#: order/templates/order_history.html:28
+msgid "PDF"
+msgstr "PDF"
+
+#: order/templates/order_history.html:31
+msgid "Request Completed"
+msgstr "Demande terminée"
+
+#: order/templates/order_history.html:33
+msgid "Confirm Request Completion"
+msgstr "Confirmer le traitement de la demande"
+
+#: order/templates/order_history.html:35
+msgid "CSV"
+msgstr "CSV"
+
+#: order/templates/order_invoice.html:5 order/templates/pdf.html:8
+msgid "Your Order Invoice"
+msgstr "Votre facture de commande"
+
+#: order/templates/order_invoice.html:10 order/templates/pdf.html:13
+msgid "Invoice"
+msgstr "Facture d'achat"
+
+#: order/templates/order_invoice.html:12 order/templates/pdf.html:15
+msgid "Cleared"
+msgstr "Effacé"
+
+#: order/templates/order_invoice.html:18 order/templates/pdf.html:21
+msgid "From"
+msgstr "De"
+
+#: order/templates/order_invoice.html:47
+msgid "Item"
+msgstr "Article"
+
+#: order/templates/order_invoice.html:48
+msgid "Unit Cost"
+msgstr "Coût unitaire"
+
+#: order/templates/order_invoice.html:49
+msgid "Qty"
+msgstr "Quantité"
+
+#: order/templates/order_invoice.html:50 order/templates/order_invoice.html:76
+msgid "Total"
+msgstr "Totale"
+
+#: order/templates/ordered_product.html:15
+#: product/templates/add_product.html:25 product/templates/product.html:15
+#: product/templates/update_product.html:25
+msgid "Description"
+msgstr "La description"
+
+#: order/templates/ordered_product.html:19
+msgid "You already rated this ordered item"
+msgstr "Vous avez déjà évalué cet article commandé"
+
+#: order/templates/ordered_product.html:34
+msgid "Rate Product"
+msgstr "Évaluer le produit"
+
+#: order/templates/pdf.html:69
+msgid "Total Expenditure"
+msgstr "Total des dépenses"
+
+#: order/views.py:49 order/views.py:225
+msgid "Order was successfully made"
+msgstr "La commande a été faite avec succès"
+
+#: product/templates/add_product.html:21 product/templates/cart.html:11
+#: product/templates/update_product.html:21
+msgid "Product Name"
+msgstr "Nom du produit"
+
+#: product/templates/add_product.html:29 product/templates/cart.html:12
+#: product/templates/update_product.html:29
+msgid "Price"
+msgstr "Prix"
+
+#: product/templates/add_product.html:33
+#: product/templates/update_product.html:33
+msgid "Upload Image"
+msgstr "Télécharger une image"
+
+#: product/templates/cart.html:5
+msgid "Shopping cart"
+msgstr "Chariot"
+
+#: product/templates/cart.html:10
+msgid "Quantity"
+msgstr "Quantité"
+
+#: product/templates/cart.html:14
+msgid "Remove Item"
+msgstr "Retirer l'objet"
+
+#: product/templates/cart.html:30
+msgid "No Items in the cart"
+msgstr "Aucun article dans le panier"
+
+#: product/templates/cart.html:41
+msgid "Choose Payment Method"
+msgstr "Choisissez le mode de paiement"
+
+#: product/templates/cart.html:46 product/templates/cart.html:67
+msgid "Cash"
+msgstr "En espèces"
+
+#: product/templates/cart.html:52
+msgid "Card"
+msgstr "Carte"
+
+#: product/templates/cart.html:52
+msgid "Visa"
+msgstr "Visa"
+
+#: product/templates/cart.html:59 product/templates/cart.html:67
+msgid "Checkout"
+msgstr "Check-out"
+
+#: product/templates/cart.html:68
+msgid "Please login to make order"
+msgstr "Veuillez vous connecter pour passer une commande"
+
+#: product/templates/product.html:23 product/templates/product_list.html:35
+msgid "Add To Cart"
+msgstr "Ajouter au panier"
+
+#: product/templates/product_list.html:6
+msgid "Products"
+msgstr "Des produits"
+
+#: product/templates/product_list.html:20
+#: product/templates/product_list.html:24
+msgid "View"
+msgstr "Vue"
+
+#: product/templates/product_list.html:44
+msgid "No Products Available."
+msgstr "Aucun produit disponible"
+
+#: product/views.py:168
+msgid "You have been successfully created a Product"
+msgstr "Vous avez créé avec succès un produit"
+
+#: product/views.py:195
+msgid "You have been successfully update the Product"
+msgstr "Vous avez réussi à mettre à jour le produit"
+
+#: rating/views.py:22
+msgid "You have successfully rated the product"
+msgstr "Vous avez évalué le produit avec succès"
+
+#: rating/views.py:25
+msgid "You did not select anything for rating"
+msgstr "Vous n'avez rien sélectionné pour l'évaluation"
+
+#~ msgid "field label"
+#~ msgstr "Nom d'utilisateur, mot de passe"

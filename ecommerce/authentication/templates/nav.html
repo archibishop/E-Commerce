@@ -1,47 +1,60 @@
+{% load i18n %}
 <h3 class="my-0 mr-md-auto font-weight-normal">
-    <a font-weight-normal href="{% url 'product:product-list' %}">
+    <a class="text-decoration-none" href="{% url 'product:product-list' %}">
         <bold>Duuka</bold>
     </a>
 </h3>
 <nav class="my-2 my-md-0 mr-md-3">
     <div class="row">
-        <div class="dropdown p-2 col-4">
+        <div class="dropdown p-2 col-3">
             <a class="p-2 text-dark mr-2 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                Category
+                {% trans 'Languages' %}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                <a class="dropdown-item"href="{% url 'lang' 'en' %}">{% trans 'English' %}</a>
+                <a class="dropdown-item" href="{% url 'lang' 'fr' %}">{% trans 'French' %}</a>
+
+            </div>
+        </div>
+        <div class="dropdown p-2 col-3">
+            <a class="p-2 text-dark mr-2 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                {% trans 'Category' %}
             </a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 {% for category in categories %}
                 <a class="dropdown-item"
                     href="{% url 'product:products-category' category.category_name  %}">{{ category.category_name }}</a>
                 {% empty %}
-                <a class="dropdown-item" href="#">No Available Category</a>
+                <a class="dropdown-item" href="#">{% trans 'No Available Category' %}</a>
                 {% endfor %}
             </div>
         </div>
-        <div class="dropdown p-2 col-4">
+        <div class="dropdown p-2 col-3">
             <a class="p-2 text-dark mr-2 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                Vendors
+                {% trans 'Vendors' %}
             </a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 {% for vendor in vendors %}
                 <a class="dropdown-item"
                     href="{% url 'product:products-vendor' vendor.user.id  %}">{{ vendor.user.username }}</a>
                 {% empty %}
-                <a class="dropdown-item" href="#">No Available Vendors</a>
+                <a class="dropdown-item" href="#">{% trans 'No Available Vnedors' %}</a>
                 {% endfor %}
             </div>
         </div>
-        <div class="dropdown p-2 col-4">
+        <div class="dropdown p-2 col-3">
             <a class="p-2 text-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                Support
+                {% trans 'Support' %}
             </a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Help</a>
-                <a class="dropdown-item" href="#">About Us</a>
-                <a class="dropdown-item" href="#">Contact</a>
+                <a class="dropdown-item" href="#">{% trans 'Help' %}</a>
+                <a class="dropdown-item" href="#">{% trans 'About Us' %}</a>
+                <a class="dropdown-item" href="#">{% trans 'Contact' %}</a>
             </div>
         </div>
     </div>
@@ -60,7 +73,7 @@
 
 {% if request.user.is_authenticated %}
     {% if not person.customer %}
-        <a class="btn btn-outline-primary mr-2" href="{% url 'product:product-create' %}">Add Product</a>
+        <a class="btn btn-outline-primary mr-2" href="{% url 'product:product-create' %}">{% trans 'Add Product' %}</a>
     {% else %}    
         <a class="btn btn-outline-primary mr-2" href="{% url 'notifications:notifications-list' %}">
             <span class="badge badge-dark">
@@ -69,9 +82,9 @@
             Notifications
         </a>
     {% endif %}
-    <a class="btn btn-outline-primary mr-2" href="{% url 'order:order-history' %}">Orders</a>
-    <a class="mr-2" href="{% url 'log_out'%}">Sign Out</a>
+    <a class="btn btn-outline-primary mr-2" href="{% url 'order:order-history' %}">{% trans 'Orders' %}</a>
+    <a class="mr-2" href="{% url 'log_out'%}">{% trans 'Sign Out' %}</a>
 {% else %}
-    <a class="btn btn-outline-primary mr-2" href="{% url 'login_user' %}">Login</a>
-    <a class="btn btn-outline-primary mr-2" href="{% url 'sign_up'%}">Sign Up</a>
+    <a class="btn btn-outline-primary mr-2" href="{% url 'login_user' %}">{% trans 'Login' %}</a>
+    <a class="btn btn-outline-primary mr-2" href="{% url 'sign_up'%}">{% trans 'Sign Up' %}</a>
 {% endif %}

@@ -1,8 +1,9 @@
 {% extends 'base_layout.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
-    <h1 class="text-center mt-5">Products</h1>
+    <h1 class="text-center mt-5">{% trans 'Products' %}</h1>
     <div class="row text-center mt-5">
         {% for product in product_list %}
         <div class="col-sm-4">
@@ -10,17 +11,17 @@
                 <div class="card-header">
                     <h4 class="my-0 font-weight-normal">{{ product.product_name }}</h4>
                 </div>
-                <img class="card-img-top p-4 center-block image-details" src="{{ product.image }}" alt="Imsge Unavailable">
+                <img class="card-img-top p-4 center-block image-details" src="{{ product.image }}" alt="Image Unavailable">
                 <div class="card-body">
                     <h1 class="card-title pricing-card-title">${{ product.price }} <small class="text-muted">/ mo</small></h1>
                     <div class="row">
                         {% if not person.customer and request.user.is_authenticated %}
                             <div class="col-12">
-                                <a class="btn btn-lg btn-outline-primary ml-2" href="{% url 'product:product-item' product.id %}">View</a>
+                                <a class="btn btn-lg btn-outline-primary ml-2" href="{% url 'product:product-item' product.id %}">{% trans 'View' %}</a>
                             </div>
                         {% else %}
                             <div class="col-3 ml-4">
-                                <a class="btn btn-lg btn-outline-primary ml-2" href="{% url 'product:product-item' product.id %}">View</a>
+                                <a class="btn btn-lg btn-outline-primary ml-2" href="{% url 'product:product-item' product.id %}">{% trans 'View' %}</a>
                             </div>
                         {% endif %}
                         {% if person.customer or not request.user.is_authenticated %}
@@ -31,7 +32,7 @@
                                     <input name="product_name" type=hidden value="{{ product.product_name }}">
                                     <input name="product_price" type=hidden value="{{ product.price }}">
                                     <input name="product_category" type=hidden value="{{ product.category.category_name }}">
-                                    <button type=submit class="btn btn-lg btn-outline-primary ">Add To Cart</button>
+                                    <button type=submit class="btn btn-lg btn-outline-primary ">{% trans 'Add To Cart' %}</button>
                                 </form>
                             </div>
                         {% endif %}
@@ -40,7 +41,7 @@
             </div>
         </div>
         {% empty %}
-        <h3 class="text-muted text-center mt-5">No Products Available.</h3>
+        <h3 class="text-muted text-center mt-5">{% trans 'No Products Available.' %}</h3>
         {% endfor %}
     </div>
 

@@ -1,5 +1,6 @@
 {% extends 'base_layout.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
     <h1 class="text-center">{{ product.product_name }} - $ {{ product.price }} </h1>
@@ -11,7 +12,7 @@
             </div>
         </div>
         <div class="col-sm-8">
-            <H4>Description</H4>
+            <H4>{% trans 'Description' %}</H4>
             <p class="mt-4">{{ product.description }}</p>
             <form method="POST" action="{% url 'product:products-cart' %}">
                 {% csrf_token %}
@@ -19,7 +20,7 @@
                 <input name="product_name" type=hidden value="{{ product.product_name }}">
                 <input name="product_price" type=hidden value="{{ product.price }}">
                 <input name="product_category" type=hidden value="{{ product.category.category_name }}">
-                <button type=submit class="btn btn-lg btn-outline-primary ">Add To Cart</button>
+                <button type=submit class="btn btn-lg btn-outline-primary ">{% trans 'Add To Cart' %}</button>
             </form>
         </div>
     </div>

@@ -1,5 +1,6 @@
 {% extends 'base_layout.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 <h1 class="text-center">{{ product.product_name }} - $ {{ product.price }} </h1>
@@ -11,11 +12,11 @@
         </div>
     </div>
     <div class="col-sm-8">
-        <H4>Description</H4>
+        <H4>{% trans 'Description' %}</H4>
         <p class="mt-4">{{ product.description }}</p>
         {% if person.customer %}
         {% if rate %}
-        <h4 class="text-center text-muted mt-5"> You already rated this ordered item</h4>
+        <h4 class="text-center text-muted mt-5"> {% trans 'You already rated this ordered item' %} </h4>
         {% else %}
         <form method="POST" action="{% url 'rate:rate-product' %}">
             {% csrf_token %}
@@ -30,7 +31,7 @@
                     <input type="radio" id="star6" name="rating" value="1" /><label for="star6" title="Meh">1 star</label>
                 </h5>
             </div>
-            <button class="btn btn-lg btn-outline-primary mb-5 mt-3" type="submit">Rate Product</button>
+            <button class="btn btn-lg btn-outline-primary mb-5 mt-3" type="submit">{% trans 'Rate Product' %}</button>
         </form>
         {% endif %}
         {% endif %}

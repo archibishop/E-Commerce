@@ -1,13 +1,14 @@
 {% extends 'base_layout.html' %}
+{% load i18n %}
 
 {% block content %}
-<h1 class="text-center mt-5">Order History</h1>
+<h1 class="text-center mt-5">{% trans 'Order History' %}</h1>
 <table class="table mt-5 text-center">
     <thead>
         <tr>
-            <th scope="col">#(Order No.)</th>
-            <th scope="col">Order Total</th>
-            <th scope="col">Ordered items</th>
+            <th scope="col">#({% trans 'Order No.' %})</th>
+            <th scope="col">{% trans 'Order Total' %}</th>
+            <th scope="col">{% trans 'Ordered items' %}</th>
             <th scope="col"></th>
         </tr>
     </thead>
@@ -23,15 +24,15 @@
                 </td>
                 <td>
                     {% if person.customer %}
-                        <a class="btn btn-outline-primary" href="{% url 'order:order-invoice' order.id %}">View Invoice</a>
-                        <a class="btn btn-outline-primary" href="{% url 'order:order-generate-pdf' order.id %}">PDF</a>
+                        <a class="btn btn-outline-primary" href="{% url 'order:order-invoice' order.id %}">{% trans 'View Invoice' %}</a>
+                        <a class="btn btn-outline-primary" href="{% url 'order:order-generate-pdf' order.id %}">{% trans 'PDF' %}</a>
                     {% else %}
                         {% if status %} 
-                            <button class="btn btn-outline-success" href="#" disabled>Request Completed</button>
+                            <button class="btn btn-outline-success" href="#" disabled>{% trans 'Request Completed' %}</button>
                         {% else %}
-                            <a class="btn btn-outline-primary" href="{% url 'order:order-request' order.id %}">Confirm Request Completion</a>
+                            <a class="btn btn-outline-primary" href="{% url 'order:order-request' order.id %}">{% trans 'Confirm Request Completion' %}</a>
                         {% endif %}
-                            <a class="btn btn-outline-primary" href="{% url 'order:order-csv' order.id %}">CSV</a>
+                            <a class="btn btn-outline-primary" href="{% url 'order:order-csv' order.id %}">{% trans 'CSV' %}</a>
                     {% endif %}
                 </td>
             </tr>
