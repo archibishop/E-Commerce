@@ -11,6 +11,7 @@ import cloudinary
 import os
 from django.contrib import messages
 from django.urls import reverse
+from django.utils.translation import gettext
 # Create your views here.
 
 class ProductListView(ListView):
@@ -98,10 +99,14 @@ class CartView(View):
     template_name = 'cart.html'
 
     def get(self, request, *args, **kwargs):
-        person = Person.objects.get(user=self.request.user)
+        person = ''
+        num = 0
+        if request.user.is_authenticated:
+            person = Person.objects.get(user=self.request.user)
+            num = get_num_notifications(self.request.user)
         return render(request, self.template_name, {'vendors': get_vendors()
                              , 'categories': get_categories(), 'person': person
-                             ,'num_notifications': get_num_notifications(self.request.user)
+                             ,'num_notifications': num
                              , 'key': settings.STRIPE_PUBLISHABLE_KEY})
 
     def post(self, request, *args, **kwargs):
@@ -159,7 +164,9 @@ class ProductCreateView(View):
             price=request.POST['price'],
             image=image_url,
             category=category)
-        messages.success(request, 'You have been successfully created a Product')
+        message_output = gettext(
+            'You have been successfully created a Product')
+        messages.success(request, message_output)
         return render(request, self.template_name, {'categories': get_categories()
                                                     ,'title': 'Add Product'})
 
@@ -184,8 +191,10 @@ class ProductUpdateView(View):
             price=request.POST['price'],
             image=image_url,
             category=category)
+        message_output = gettext(
+            'You have been successfully update the Product')
         messages.success(
-            request, 'You have been successfully update the Product')
+            request, message_output)
         return HttpResponseRedirect(reverse('product:product-list'))
 
 def get_vendors():

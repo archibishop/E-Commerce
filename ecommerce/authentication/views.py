@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 from .models import Person
 from django.views import View
 from .forms import SignUpForm, LoginForm
+from django.utils.translation import gettext
+from django.utils import translation
 
 # Create your views here.
 def index(request):
@@ -29,7 +31,8 @@ class SignUp(View):
             user = create_user(form)
             Person.objects.create(user=user, customer=customer)
             login(request, user)
-            messages.success(request, 'You have been successfully logged in')
+            message_output = gettext('You have been successfully logged in.')
+            messages.success(request, message_output)
             return HttpResponseRedirect(reverse('index'))
 
         return render(request, self.template_name, {'form': form})
@@ -50,19 +53,33 @@ class Login(View):
                 'username'), password=form.cleaned_data.get('password'))
             if user is not None:
                 login(request, user)
+                message_output = gettext(
+                    'You have successfully Logged In.')
                 messages.success(
-                    request, 'You have successfully Logged In')
+                    request, message_output)
                 return HttpResponseRedirect(reverse('product:product-list'))
-        messages.error(request, 'User does not exist. Wrong Email/Password')
+        message_output = gettext('User does not exist. Wrong Email/Password.')
+        messages.error(request, message_output)
         return render(request, self.template_name, {'form': form})
 
 
 class Logout(View):
     def get(self, request):
         logout(request)
+        message_output = gettext('You have logged out of the system.')
         messages.info(
-            request, 'You have logged out of the system.')
+            request, message_output)
         return HttpResponseRedirect(reverse('product:product-list'))
+
+
+class Language(View):
+    def get(self, request, *args, **kwargs):
+        user_language = kwargs['language']
+        translation.activate(user_language)
+        request.session[translation.LANGUAGE_SESSION_KEY] = user_language
+        message_output = gettext('You have changed the language.')
+        messages.info(request, message_output)
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER',''),)
 
 
 def create_user(form):

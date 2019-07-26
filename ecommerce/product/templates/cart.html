@@ -1,16 +1,17 @@
 {% extends 'base_layout.html' %}
+{% load i18n %}
 
 {% block content %}
-    <h1 class="text-center mt-5">Shopping cart</h1>
+    <h1 class="text-center mt-5">{% trans 'Shopping cart' %}</h1>
     
     <table class="table mt-5 text-center">
         <thead>
             <tr>
-                <th scope="col">#(Quantity)</th>
-                <th scope="col">Product Name</th>
-                <th scope="col">Price</th>
-                <th scope="col">Category</th>
-                <th scope="col">Remove Item</th>
+                <th scope="col">#({% trans 'Quantity' %})</th>
+                <th scope="col">{% trans 'Product Name' %}</th>
+                <th scope="col">{% trans 'Price' %}</th>
+                <th scope="col">{% trans 'Category' %}</th>
+                <th scope="col">{% trans 'Remove Item' %}</th>
             </tr>
         </thead>
         <tbody>
@@ -26,7 +27,7 @@
             </tr>
             {% empty %}
             <tr>
-            <h4 class="text-center text-muted mt-3">No Items in the cart</h4>
+            <h4 class="text-center text-muted mt-3">{% trans 'No Items in the cart' %}</h4>
             </tr>
             {% endfor %}
         </tbody>
@@ -37,25 +38,25 @@
     <div class="container center-block">
         <div class="row">
             <div class="col-md-4 offset-md-4">
-    <h3 class="text-muted mt-4">Choose Payment Method</h3>    
+    <h3 class="text-muted mt-4">{% trans 'Choose Payment Method' %}</h3>    
     
     <div class="form-check">
     <input class="form-check-input" type="radio" name="payment" id="payRadio1" value="cash" checked>
     <label class="form-check-label" for="exampleRadios1">
-        Cash
+        {% trans 'Cash' %}
     </label>
     </div>
     <div class="form-check">
     <input class="form-check-input" type="radio" name="payment" id="payRadio2" value="card">
     <label class="form-check-label" for="exampleRadios2">
-        Card(Visa)
+        {% trans 'Card' %}({% trans 'Visa' %})
     </label>
     </div>
     </div>
     </div>
     </div>
     <div class="text-center mt-5">
-            <button class="btn btn-lg btn-outline-primary" href="{% url 'order:order-products' %}">Checkout</button>
+            <button class="btn btn-lg btn-outline-primary" href="{% url 'order:order-products' %}">{% trans 'Checkout' %}</button>
         
         </form>
         
@@ -63,8 +64,8 @@
     </div>
     {% else %}
     <div class="text-center mt-5">
-        <button class="btn btn-lg btn-outline-primary" href="{% url 'order:order-products' %}" disabled>Checkout (Cash)</button>
-        <div class="text-muted mt-3">Please login to make order</div>
+        <button class="btn btn-lg btn-outline-primary" href="{% url 'order:order-products' %}" disabled>{% trans 'Checkout' %} ({% trans 'Cash' %})</button>
+        <div class="text-muted mt-3">{% trans 'Please login to make order' %}</div>
     </div>
     {% endif %}
     {% endif %}

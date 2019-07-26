@@ -1,7 +1,8 @@
 {% extends 'base_layout.html' %}
+{% load i18n %}
 
 {% block content %}
-    <h1 class="text-center mt-5">Sign Up</h1>
+    <h1 class="text-center mt-5">{% trans 'Sign Up' %}</h1>
     <form class="mt-5 mb-5" action="{% url 'sign_up'%}" method="POST">
         {% csrf_token %}
 
@@ -26,7 +27,7 @@
         <div class="form-group">
             <label for="firstName">{{ form.email.label_tag }}</label>
             {{ form.email }}
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <small id="emailHelp" class="form-text text-muted">{% trans 'We wll never share your email with anyone else' %}.</small>
         </div>
         <div class="form-group">
             <label for="firstName">{{ form.password.label_tag }}</label>
@@ -39,6 +40,6 @@
         <div class="form-check mb-4">
             <label class="form-check-label" for="checkCustomer">{{ form.customer.label_tag }}</label> {{ form.customer }}
         </div>
-        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        <button type="submit" class="btn btn-primary btn-block">{% trans 'Submit' %}</button>
     </form>
 {% endblock %}

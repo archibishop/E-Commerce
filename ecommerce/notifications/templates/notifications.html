@@ -1,8 +1,9 @@
 {% extends 'base_layout.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
-<h1 class="text-center mt-5">Notifications</h1>
+<h1 class="text-center mt-5">{% trans 'Notifications' %}</h1>
     {% for notification in notification_items %}
     <div class="col-sm-12">
         <div class="card mb-4 shadow-sm">
@@ -10,9 +11,9 @@
                 {{ notification.message }} 
                 <a type=submit class="btn btn-sm btn-outline-primary ml-4" href="{% url 'notifications:notification-item' notification.id %}">More Details</a>
                 {% if notification.read %}
-                    Status: Read
+                    {% trans 'Status' %}: {% trans 'Read' %}
                 {% else %}
-                    Status: Unread
+                    {% trans 'Status' %}: {% trans 'Unread' %}
                 {% endif %}
             </div>
            
