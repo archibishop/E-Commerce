@@ -19,21 +19,21 @@
 
         <div class="form-group">
             <label for="product-name">{% trans 'Product Name' %}</label>
-            <input type="pdt-name" class="form-control" id="pdt-name" name="pdt-name" value="{{ product.product_name }}">
+            <input type="pdt-name" class="form-control" id="pdt-name" name="pdt-name" value="{{ product.product_name }}" required>
         </div>
         <div class="form-group">
             <label for="desc">{% trans 'Description' %}</label>
-            <input type="text-area" class="form-control" id="desc" name="desc" value="{{ product.description }}">
+            <input type="text-area" class="form-control" id="desc" name="desc" value="{{ product.description }}" required>
         </div>
         <div class="form-group">
             <label for="price">{% trans 'Price' %}</label>
-            <input type="text" class="form-control" id="price" name="price" value="{{ product.price }}">
+            <input type="number" class="form-control" id="price" name="price" value="{{ product.price }}" min="0" required>
         </div>
         <div class="form-group">
             <label for="image">{% trans 'Upload Image' %}</label>
-            <input type="file" name="image">
+            <input type="file" name="image" required>
         </div>
-        <input type="hidden" id="pdt-id" name="pdt-id" value="{{ product.id }}">
+        <input type="hidden" id="pdt-id" name="pdt-id" value="{{ product.id }}" required>
         <div class="form-group">
             <label for="category">{% trans 'Category' %}</label>
             <select class="form-control" name="category" id="category">

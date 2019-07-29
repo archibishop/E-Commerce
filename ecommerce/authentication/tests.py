@@ -78,3 +78,8 @@ class AuthenticationTestCase(TestCase):
         client.get(reverse('sign_up'))
         response = client.get('/language/fr/')
         self.assertEqual(response.status_code, 302)
+
+    def test_index_page(self):
+        client = Client()
+        response = client.get(reverse('index'))
+        self.assertEqual(response.status_code, 302)
