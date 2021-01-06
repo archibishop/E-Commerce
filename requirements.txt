@@ -1,7 +1,7 @@
 astroid==2.2.5
 autopep8==1.4.4
 cairocffi==0.6
-CairoSVG==2.4.0
+CairoSVG==2.5.1
 certifi==2019.6.16
 cffi==1.12.3
 chardet==3.0.4
