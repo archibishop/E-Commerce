@@ -9,7 +9,7 @@ coverage==4.5.3
 coveralls==1.8.1
 cssselect2==0.2.1
 defusedxml==0.6.0
-Django==2.2.3
+Django==2.2.21
 django-easy-pdf==0.1.1
 docopt==0.6.2
 html5lib==1.0.1
